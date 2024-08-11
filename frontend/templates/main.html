@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="../images/automate-business.ico" />
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <script defer src="../js/bootstrap.bundle.min.js"></script>
+  <script defer src="../js/jquery-3.7.0.min.js"></script>
+  <link rel="stylesheet" href="../css/datatables.min.css">
+  <script defer src="../js/datatables.min.js"></script>
+  <link rel="stylesheet" href="../css/flatpickr.min.css" />
+  <script defer src="../js/flatpickr.min.js"></script>
+  <script type="text/javascript" src="/eel.js"></script>
+  <link rel="stylesheet" href="../fontawesome/css/fontawesome.css" />
+  <link rel="stylesheet" href="../fontawesome/css/solid.css" />
+  <link rel="stylesheet" href="../fontawesome/css/brands.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+
+  <title>ePost Downloader v2</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark bg-dark sticky-top">
+    <!-- Navbar content -->
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="d-flex justify-content-center align-items-center" id="navbarTitle">ePost Downloader</div>
+      <div class="d-flex">
+        <button type="button" class="btn btn-primary" onclick="showPage('help')" id="helpButton"
+          style="display: block;">
+          <i class="fa-solid fa-question"></i>
+        </button>
+        <button type="button" class="btn btn-primary ms-2" onclick="showPage('epost-downloader')" id="homeButton"
+          style="display: none">
+          <i class="fa-solid fa-house"></i>
+        </button>
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" data-bs-scroll="true">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="sidebar-tile sidebar-tile-selected" id="sidebarTileEpostDownloader" onclick="showPage('epost-downloader')"
+          data-bs-dismiss="offcanvas">Epost Downloader</div>
+        <hr>
+        <div class="sidebar-tile" id="sideBarTileHelp" onclick="showPage('help')" data-bs-dismiss="offcanvas">Help</div>
+      </div>
+    </div>
+  </nav>
+  <div class="mt-1 me-1 d-flex justify-content-end">
+    <div class="spinner-border text-success" id="loadingSpinner" style="display: none;" role="status"></div>
+  </div>
+  <div class="container mt-3">
+    {% include 'epost-downloader.html' %}
+    {% include 'help.html' %}
+
+    <!-- Failsafe Modal -->
+    <div class="modal fade" id="failsafeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Failsafe Triggered</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">The failsafe has been triggered. Automation has been terminated.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Error</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="errorModalBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complete with error Modal -->
+    <div class="modal fade" id="completeWithErrorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Complete With Error</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="completeWithErrorModalBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complete Modal -->
+    <div class="modal fade" id="completeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Complete</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">Task completed successfully.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/epostDownloader.js"></script>
+</body>
+
+</html>

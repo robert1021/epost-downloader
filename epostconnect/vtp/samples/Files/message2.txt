@@ -1,0 +1,6 @@
+Dear Sir/Madam,
+
+  Here is a brief sample message to be used to test the functionality of epost Connect.
+
+sincerely,
+  The epost connect team

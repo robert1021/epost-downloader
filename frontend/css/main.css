@@ -1,0 +1,62 @@
+body {
+  background-color: #F0F0F0;
+}
+
+.start-button {
+  width: 100px;
+  height: 50px;
+  font-size: larger;
+}
+
+.stop-button {
+  width: 100px;
+  height: 50px;
+  font-size: larger;
+}
+
+.clear-button {
+  width: 100px;
+  height: 50px;
+  font-size: larger;
+}
+
+#navbarTitle {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.sidebar-tile {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  font-size: larger;
+  text-align: left;
+  height: 50px;
+  cursor: pointer;
+}
+
+.sidebar-tile:hover {
+  background-color: #e2e2e2;
+  font-weight: bold;
+}
+
+.sidebar-tile-selected {
+  background-color: #e2e2e2;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+.accordion-button:hover {
+  background-color: #e7f1ff;
+}
+
+.excel-button {
+  background-image: url(../images/excel-blue-icon.png);
+  background-size: cover;
+  width: 40px;
+}
+
+.tool-card:hover {
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}

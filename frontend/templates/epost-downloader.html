@@ -1,0 +1,130 @@
+<div id="epost-downloader" class="page" style="display: block;">
+    <nav>
+        <div class="nav nav-tabs mb-3" id="navEpostDownloaderTab" role="tablist">
+            <button class="nav-link active epost-downloader-tab m-2" id="navEpostDownloaderDownloadTab" data-bs-toggle="tab"
+                    data-bs-target="#navEpostDownloaderDownload" type="button" role="tab" aria-controls="navEpostDownloaderDownload"
+                    aria-selected="true">Download
+            </button>
+            <button class="nav-link epost-downloader-tab position-relative m-2" id="navEpostDownloaderOutputTab" data-bs-toggle="tab"
+                    data-bs-target="#navEpostDownloaderOutput" type="button" role="tab" aria-controls="navEpostDownloaderOutput" aria-selected="false"
+                    style="display: none;">Output
+            </button>
+            <button class="nav-link epost-downloader-tab position-relative m-2" id="navEpostDownloaderLogsTab" data-bs-toggle="tab"
+                    data-bs-target="#navEpostDownloaderLogs" type="button" role="tab" aria-controls="navEpostDownloaderLogs" aria-selected="false"
+                    style="display: none;" onclick="fixTableColumnHeaders()">Logs
+            </button>
+            
+        </div>
+    </nav>
+
+
+
+    <div class="tab-content" id="navTabEpostDownloaderContent">
+        <div class="tab-pane fade show active" id="navEpostDownloaderDownload" role="tabpanel" aria-labelledby="navEpostDownloaderDownloadTab" tabindex="0">
+            
+            <div class="card mb-3" id="enterCustomeModeDetails">
+                <div class="card-body">
+                    <h5 class="card-title">Enter Details:</h5>
+                    <div class="card-text">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Start Date</span>
+                            <input type="text" class="form-control" id="datepickerEpostDownloaderStart" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">End Date</span>
+                            <input type="text" class="form-control" id="datepickerEpostDownloaderEnd" />
+                        </div>
+                        <hr>
+                        <p>Download Messages:</p>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="epostDownloaderDownloadRadio"
+                                        id="downloadAllEpostDownloader"
+                                        checked />
+                                    <label class="form-check-label" for="downloadAllEpostDownloader">
+                                        All
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="epostDownloaderDownloadRadio"
+                                        id="downloadNewEpostDownloader"/>
+                                    <label class="form-check-label" for="downloadNewEpostDownloader">
+                                        New / Unopened
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="categorizeMessagesEpostDownloader">
+                            <label class="form-check-label" for="categorizeMessagesEpostDownloader">
+                                Categorize Messages
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="scrapeEpostConnectEpostDownloader" onclick="handleScrapeEpostConnectCheckedEpostDownloader()">
+                            <label class="form-check-label" for="scrapeEpostConnectEpostDownloader">
+                                Scrape ePost Connect
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Epost Credentials</h5>
+                    <div class="card-text">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Token</span>
+                            <input type="text" class="form-control" id="epostDownloaderToken" />
+                        </div>
+                        <div id="epostDownloaderUserPassInputGroup" style="display: none;">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Username</span>
+                                <input type="text" class="form-control" id="epostDownloaderUsername" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Password</span>
+                                <input type="password" class="form-control" id="epostDownloaderPassword" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-center">
+                <button type="button" class="btn btn-success start-button" onclick="startEpostDownloader()"
+                  id="startButtonEpostDownloader">
+                  Start
+                </button>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <button type="button" class="btn btn-danger stop-button" onclick="stopEpostDownloader()" style="display: none;"
+                  id="stopButtonEpostDownloader">
+                  Stop
+                </button>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="navEpostDownloaderOutput" role="tabpanel" aria-labelledby="navEpostDownloaderOutputTab" tabindex="0">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="card-text">
+                        <div>
+                            <p>Messages downloaded: <span id="epostDownloaderMessageCount">0</span></p>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="" id="textAreaEpostDownloader"
+                                style="height: 500px"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="navEpostDownloaderLogs" role="tabpanel" aria-labelledby="navEpostDownloaderLogsTab" tabindex="0"></div>
+    </div>
+
+</div>

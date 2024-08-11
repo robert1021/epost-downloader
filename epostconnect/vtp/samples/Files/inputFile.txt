@@ -1,0 +1,2 @@
+-to <email_address1> -m Files/message.txt -lang en  -s "PosteCS Detail Activity Report" -att Files/Zombies.pdf
+-to <email_address2> -lang fr  -s "Rapport d'activité détaillé de PosteCS 2" -m Files/epost_Connect_fr.txt
