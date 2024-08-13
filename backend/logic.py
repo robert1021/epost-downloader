@@ -179,6 +179,9 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
 
     # Only scrape epost connect if the checkbox in the frontend is checked
     if scrape_epost_connect:
+        if not os.path.isfile("chromedriver.exe"):
+            return "error - missing chromedriver"
+
         # Reset globals
         global epost_downloader_connect_driver, is_epost_downloader_connect_scrape_failed
         epost_downloader_connect_driver = None
