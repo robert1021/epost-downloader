@@ -64,6 +64,8 @@ const startEpostDownloader = async () => {
         showErrorModal("Invalid username/password; logon denied");
     } else if (result === "error - missing chromedriver"){
         showErrorModal("Missing the chromedriver.");
+    } else if (result === "error - issue with chromedriver") {
+        showErrorModal("Issue with the chromedriver.");
     } else if (result === "error - epost connect scrape") {
         showErrorModal("Something went wrong while scraping epost connect.");
     } else if (result === "error - epost connect window closed") {

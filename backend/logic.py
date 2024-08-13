@@ -199,6 +199,9 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
             is_running = eel.getEpostDownloaderRunning()()
 
             if not is_running:
+                if epost_downloader_connect_driver is None:
+                    return "error - issue with chromedriver"
+
                 epost_downloader_connect_driver.quit()
                 epost_downloader_connect_driver = None
                 return "error - stopped"
@@ -207,6 +210,9 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
 
         # Stop the app because something went wrong while running the epost connect scrape
         if is_epost_downloader_connect_scrape_failed:
+            if epost_downloader_connect_driver is None:
+                return "error - issue with chromedriver"
+
             epost_downloader_connect_driver.quit()
             epost_downloader_connect_driver = None
             return "error - epost connect scrape"
