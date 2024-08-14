@@ -11,6 +11,8 @@ EPOST_CONNECT_LOGIN_URL = 'https://sso-osu.canadapost-postescanada.ca/lfe-cap/en
                           '%2Fcore%2Fen%2Fmain.a '
 EPOST_CONNECT_LOGOUT_URL = 'https://www.canadapost-postescanada.ca/connect-connexion/logout.a'
 
+TRIAGE_FOLDER_PATH = r"Y:\HC\HPFB\NNHPD\BLSS\X_REFERENCE\SAU\EPOST\Triage"
+
 GREEN_FILL_COLOR = "EBF1E9"
 RED_FILL_COLOR = "FCECE8"
 

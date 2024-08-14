@@ -12,6 +12,7 @@ import os
 import time
 import threading
 from config import vtp_path, logs_path, epost_connect_path
+from constants import TRIAGE_FOLDER_PATH
 import logging
 
 # Global to manage subprocess
@@ -152,7 +153,7 @@ def run_subprocesses_epost_downloader(token: str, start_date: str, end_date: str
 
 @eel.expose
 def run_epost_downloader(token, username, password, start_date, end_date, download_all: bool,
-                         categorize_messages: bool, scrape_epost_connect: bool):
+                         categorize_messages: bool, scrape_epost_connect: bool, move_messages_triage: bool):
     date_validation = DateValidation(start_date, end_date)
 
     if not date_validation.check_date_format():
@@ -284,7 +285,9 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
 
         try:
             eel.handleUpdateTextAreaEpostDownloader("Categorizing files\n")
-            CategorizeMessages("downloads", valid_message_ids=valid_track_ids).categorize_files()
+            categorize_messages_obj = CategorizeMessages("downloads", valid_message_ids=valid_track_ids)
+            categorize_messages_obj.categorize_files()
+            categorize_messages_obj.categorize_folders()
             eel.handleUpdateTextAreaEpostDownloader("Categorizing files was completed successfully\n")
 
         except Exception as e:
@@ -304,6 +307,27 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
                 return "error - categorizing files and downloader issue"
 
             return "error - categorizing files"
+
+    # Move the messages to the triage folder if the box is checked.
+    if move_messages_triage:
+
+        if not os.path.exists(TRIAGE_FOLDER_PATH):
+            if is_downloader_issue:
+                return "error - triage folder not found and downloader issue"
+            else:
+                return "error - triage folder not found"
+
+        try:
+            print("moving messages to triage folder...")
+            eel.handleUpdateTextAreaEpostDownloader("Moving messages to the triage folder\n")
+            # TODO: Call function to move folders to triage
+
+        except Exception as e:
+
+            if is_downloader_issue:
+                return "error - issue moving messages to triage folder and downloader issue"
+            else:
+                return "error - issue moving messages to triage folder"
 
     if is_downloader_issue:
         return "error - downloader issue"

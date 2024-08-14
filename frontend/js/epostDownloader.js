@@ -39,6 +39,7 @@ const startEpostDownloader = async () => {
     const downloadAll = getEpostDownloaderDownloadMessageType();
     const categorizeMessages = document.querySelector("#categorizeMessagesEpostDownloader").checked;
     const scrapeEpostConnect = document.querySelector("#scrapeEpostConnectEpostDownloader").checked;
+    const moveMessageTriage = document.querySelector("#moveMessagesTriageEpostDownloader").checked;
 
     // User and pass required to login to epost connect website
     const username = getEpostDownloaderUsername();
@@ -47,7 +48,7 @@ const startEpostDownloader = async () => {
     let result = null;
     
     try {
-        result = await eel.run_epost_downloader(token, username, password, dateRange.start, dateRange.end, downloadAll, categorizeMessages, scrapeEpostConnect)();
+        result = await eel.run_epost_downloader(token, username, password, dateRange.start, dateRange.end, downloadAll, categorizeMessages, scrapeEpostConnect, moveMessageTriage)();
     } catch (e) {
         result = "error";
     }
@@ -77,9 +78,17 @@ const startEpostDownloader = async () => {
     } else if (result === "error - stopped") {
         showErrorModal("Epost Downloader stopped.");
     } else if (result === "error - categorizing files and downloader issue") {
-       showCompleteWithErrorModal("Something went wrong while categorizing the files and during the file download, and it may be incomplete.");
+       showErrorModal("Something went wrong while categorizing the files and during the file download, it may be incomplete.");
+    } else if (result === "error - triage folder not found and downloader issue") {
+       showErrorModal("Triage folder not found and something went wrong during the file download, it may be incomplete.")
+    } else if (result === "error - triage folder not found") {
+       showErrorModal("Triage folder not found.")
+    } else if (result === "error - issue moving messages to triage folder and downloader issue") {
+       showErrorModal("Something went wrong while moving the messages to the triage folder and during the file download, it may be incomplete.")
+    } else if (result === "error - issue moving messages to triage folder") {
+       showErrorModal("Something went wrong while moving the messages to the triage folder.")
     } else if (result === "error - downloader issue") {
-        showCompleteWithErrorModal("Something went wrong during the file download, and it may be incomplete.");
+        showErrorModal("Something went wrong during the file download, it may be incomplete.");
     } else if (result === "error - no messages to download") {
         showErrorModal("You have no new messages to download.");
     } else if (result === "success") {

@@ -1,7 +1,7 @@
 import os
 import shutil
 from utilities import get_folder_name, generate_word_doc_message, get_file_without_id, parse_txt_message, \
-    get_message_id, is_hc_email, is_ghost_message, get_file_size_formatted, attempt_rename, generate_unique_folder_name
+    get_message_id, is_hc_email, is_ghost_message, get_file_size_formatted, attempt_rename, generate_unique_folder_name, attempt_delete_folder
 import time
 
 
@@ -95,3 +95,56 @@ class CategorizeMessages:
 
             time.sleep(0.1)
             count += 1
+
+    def categorize_folders(self):
+        """
+        Organizes and moves folders based on their names.
+        """
+        folders = [folder for folder in os.listdir(self.path) if os.path.isdir(os.path.join(self.path, folder))]
+
+        for folder in folders:
+            if "ghost" not in folder.lower() and "hc" not in folder.lower():
+                folder_path = os.path.join(self.path, folder)
+                new_folder_name = folder.split(",")[0].split("-")[1]
+                new_folder_path = os.path.join(self.path, new_folder_name)
+
+                if not os.path.exists(new_folder_path):
+                    os.mkdir(new_folder_path)
+
+                shutil.move(folder_path, new_folder_path)
+                time.sleep(0.1)
+
+            elif "ghost" in folder.lower():
+                ghost_folders = [ghost_folder for ghost_folder in os.listdir(self.ghost_path) if
+                                 os.path.isdir(os.path.join(self.ghost_path, ghost_folder))]
+
+                for item in ghost_folders:
+                    new_folder_name = item.split(",")[0].split("-")[1]
+                    new_folder_path = os.path.join(self.path, new_folder_name, "ghost")
+
+                    if not os.path.exists(new_folder_path):
+                        os.makedirs(new_folder_path)
+
+                    shutil.move(os.path.join(self.ghost_path, item), new_folder_path)
+                    time.sleep(0.1)
+
+            elif "hc" in folder.lower():
+                hc_folders = [hc_folder for hc_folder in os.listdir(self.hc_path) if
+                              os.path.isdir(os.path.join(self.hc_path, hc_folder))]
+
+                for item in hc_folders:
+                    new_folder_name = item.split(",")[0].split("-")[1]
+                    new_folder_path = os.path.join(self.path, new_folder_name, "hc")
+
+                    if not os.path.exists(new_folder_path):
+                        os.makedirs(new_folder_path)
+
+                    shutil.move(os.path.join(self.hc_path, item), new_folder_path)
+                    time.sleep(0.1)
+
+        # Delete hc and ghost folders from self.path if they exist to clean up
+        if os.path.exists(self.ghost_path):
+            attempt_delete_folder(self.ghost_path)
+
+        if os.path.exists(self.hc_path):
+            attempt_delete_folder(self.hc_path)

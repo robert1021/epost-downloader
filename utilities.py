@@ -1,5 +1,7 @@
 import re
 import os
+import shutil
+
 import docx
 import dateutil.parser
 import datetime
@@ -446,3 +448,28 @@ def get_frozen_status() -> bool:
         return True
     else:
         return False
+
+
+def attempt_delete_folder(folder_path: str, retry=10, wait=3):
+    """
+    Attempts to delete a folder with retries if the deletion fails.
+
+    :param folder_path: Path to the folder to be deleted.
+    :param retry: Number of retry attempts. Defaults to 10
+    :param wait: Delay in seconds between retries. Defaults to 3.
+
+    Raises:
+        Exception: If folder deletion fails after the specified number of retries.
+    """
+    success = False
+
+    for i in range(0, retry):
+        try:
+            shutil.rmtree(folder_path)
+            success = True
+            break
+        except:
+            time.sleep(wait)
+
+    if not success:
+        raise Exception("Folder delete has failed.")
