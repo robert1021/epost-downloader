@@ -14,6 +14,7 @@ import threading
 from config import vtp_path, logs_path, epost_connect_path
 from constants import TRIAGE_FOLDER_PATH
 import logging
+import shutil
 
 # Global to manage subprocess
 epost_downloader_pid = None
@@ -149,6 +150,45 @@ def run_subprocesses_epost_downloader(token: str, start_date: str, end_date: str
         eel.handleUpdateTextAreaEpostDownloader(str(e) + "\n")
         eel.handleUpdateTextAreaEpostDownloader(
             "An error occurred. Please check the logs when the task is complete.\n")
+
+
+def move_folders_to_triage():
+    """
+    Moves folders and their contents from the 'downloads' directory to the 'triage' folder.
+    """
+    other_path = TRIAGE_FOLDER_PATH
+
+    folders = [folder for folder in os.listdir(os.path.join("downloads")) if
+               os.path.isdir(os.path.join("downloads", folder))]
+
+    for folder in folders:
+        for item in os.listdir(os.path.join("downloads", folder)):
+            if "ghost" not in item.lower() and "hc" not in item.lower():
+                if not os.path.exists(os.path.join(other_path, folder)):
+                    os.mkdir(os.path.join(other_path, folder))
+
+                shutil.move(os.path.join("downloads", folder, item), os.path.join(other_path, folder))
+
+            elif "ghost" in item.lower():
+                if not os.path.exists(os.path.join(other_path, folder, item)):
+                    os.mkdir(os.path.join(other_path, folder, item))
+
+                ghost_folders = [ghost_folder for ghost_folder in os.listdir(os.path.join("downloads", folder, item)) if
+                                 os.path.isdir(os.path.join("downloads", folder, item, ghost_folder))]
+
+                for ghost_f in ghost_folders:
+                    shutil.move(os.path.join("downloads", folder, item, ghost_f),
+                                os.path.join(other_path, folder, item))
+
+            elif "hc" in item.lower():
+                if not os.path.exists(os.path.join(other_path, folder, item)):
+                    os.mkdir(os.path.join(other_path, folder, item))
+
+                hc_folders = [hc_folder for hc_folder in os.listdir(os.path.join("downloads", folder, item)) if
+                              os.path.isdir(os.path.join("downloads", folder, item, hc_folder))]
+
+                for hc_f in hc_folders:
+                    shutil.move(os.path.join("downloads", folder, item, hc_f), os.path.join(other_path, folder, item))
 
 
 @eel.expose
@@ -318,9 +358,9 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
                 return "error - triage folder not found"
 
         try:
-            print("moving messages to triage folder...")
             eel.handleUpdateTextAreaEpostDownloader("Moving messages to the triage folder\n")
-            # TODO: Call function to move folders to triage
+            move_folders_to_triage()
+            eel.handleUpdateTextAreaEpostDownloader("Moving messages was completed successfully\n")
 
         except Exception as e:
 
@@ -429,6 +469,3 @@ def run_epost_connect_scrape(username: str, password: str):
     except:
         is_epost_downloader_connect_scrape_failed = True
         eel.handleUpdateTextAreaEpostDownloader(f"ePost Connect scrape failed\n")
-
-
-
