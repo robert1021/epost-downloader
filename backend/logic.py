@@ -5,8 +5,7 @@ from date_validation import *
 from categorize_messages import CategorizeMessages
 from vtp_log_parser import VTPLogParser
 from enums import VTPReceiveLogFields, VTPTrackLogFields
-from utilities import generate_date_range
-from utilities import get_message_count_from_downloads_folder
+from utilities import get_message_count_from_downloads_folder, check_path_for_files, generate_date_range
 from web_scrape_messages import WebScrapeMessages
 import os
 import time
@@ -191,6 +190,17 @@ def move_folders_to_triage():
                     shutil.move(os.path.join("downloads", folder, item, hc_f), os.path.join(other_path, folder, item))
 
 
+def cleanup_downloads_folder():
+    """
+    Removes empty subdirectories from the "downloads" folder.
+    """
+    for folder in os.listdir("downloads"):
+        folder_path = os.path.join("downloads", folder)
+        if os.path.isdir(folder_path):
+            if not check_path_for_files(folder_path):
+                shutil.rmtree(folder_path)
+
+
 @eel.expose
 def run_epost_downloader(token, username, password, start_date, end_date, download_all: bool,
                          categorize_messages: bool, scrape_epost_connect: bool, move_messages_triage: bool):
@@ -353,23 +363,33 @@ def run_epost_downloader(token, username, password, start_date, end_date, downlo
 
         if not os.path.exists(TRIAGE_FOLDER_PATH):
             if is_downloader_issue:
+                eel.handleUpdateTextAreaEpostDownloader("Triage folder not found and something went wrong during the "
+                                                        "file download, it may be incomplete.\n")
                 return "error - triage folder not found and downloader issue"
             else:
+                eel.handleUpdateTextAreaEpostDownloader("Triage folder not found.\n")
                 return "error - triage folder not found"
 
         try:
             eel.handleUpdateTextAreaEpostDownloader("Moving messages to the triage folder\n")
             move_folders_to_triage()
+            time.sleep(3)
+            cleanup_downloads_folder()
             eel.handleUpdateTextAreaEpostDownloader("Moving messages was completed successfully\n")
 
-        except Exception as e:
+        except:
 
             if is_downloader_issue:
+                eel.handleUpdateTextAreaEpostDownloader("Something went wrong while moving the messages to the triage "
+                                                        "folder and during the file download, it may be incomplete.\n")
                 return "error - issue moving messages to triage folder and downloader issue"
             else:
+                eel.handleUpdateTextAreaEpostDownloader("Something went wrong while moving the messages to the triage "
+                                                        "folder.\n")
                 return "error - issue moving messages to triage folder"
 
     if is_downloader_issue:
+        eel.handleUpdateTextAreaEpostDownloader("Something went wrong during the file download, it may be incomplete.\n")
         return "error - downloader issue"
 
     return "success"

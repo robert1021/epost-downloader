@@ -473,3 +473,16 @@ def attempt_delete_folder(folder_path: str, retry=10, wait=3):
 
     if not success:
         raise Exception("Folder delete has failed.")
+
+
+def check_path_for_files(path: str) -> bool:
+    """
+    Check if the directory and its subdirectories contain files.
+
+    :param path: The path to the directory to check.
+    :return: False if the directory and subdirectories contain no files, True otherwise.
+    """
+    for _, dirs, files in os.walk(path):
+        if files:
+            return True
+    return False
