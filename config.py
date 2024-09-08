@@ -1,8 +1,8 @@
 from utilities import get_frozen_status
 
 app_name = "ePost Downloader"
-app_version = "2.0.2"
-app_build_date = "August 20, 2024"
+app_version = "2.0.3"
+app_build_date = "September 7, 2024"
 zip_name = f"ePost Downloader v{app_version}.zip"
 
 # Paths to deal with being in dev env or exe
