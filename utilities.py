@@ -223,8 +223,7 @@ def parse_txt_message(message_path: str) -> dict:
             line_index += 1
 
     fed_cal = FederalCalendar()
-    conventional_name = str(company_code) + "-" + fed_cal.get_business_date(sent_datetime).strftime(
-        "%b %d, %Y") + " - " + sent_datetime.strftime("%H%M%S")
+    conventional_name = str(company_code) + "-" + sent_datetime.strftime("%b %d, %Y") + " - " + sent_datetime.strftime("%H%M%S")
 
     # Get the business date to label on the file
     message_word_doc_date_label = fed_cal.get_business_date(sent_datetime)
